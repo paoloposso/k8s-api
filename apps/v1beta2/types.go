@@ -1027,3 +1027,32 @@ type ControllerRevisionList struct {
 	// Items is the list of ControllerRevisions
 	Items []ControllerRevision `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
+
+type Service struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Spec defines the desired identities of pods in this set.
+	// +optional
+	Spec ServiceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+}
+
+// DeploymentSpec is the specification of the desired behavior of the Deployment.
+type ServiceSpec struct {
+
+	// Label selector for pods. Existing ReplicaSets whose pods are
+	// selected by this will be the ones affected by this deployment.
+	// It must match the pod template's labels.
+	Selector *metav1.LabelSelector `json:"selector" protobuf:"bytes,1,opt,name=selector"`
+
+	Ports *[]ServicePort `json:"ports" protobuf:"bytes,2,opt,name=ports"`
+}
+
+type ServicePort struct {
+	Protocol   string
+	Port       string
+	TargetPort string
+}
